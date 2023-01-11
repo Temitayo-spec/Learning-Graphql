@@ -1,12 +1,18 @@
 import express, { Application, Request, Response } from 'express';
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { graphqlHTTP } from 'express-graphql';
 import schema from './schema/schema';
+import db from './config/db';
+import colors from 'colors';
 
 const app: Application = express();
 dotenv.config();
+db();
+
+// colors
+colors.enable();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
