@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { Clients, Header } from './components';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
+import ClientModal from './components/ClientModal';
+import { useState } from 'react';
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -27,10 +29,12 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const [modal, setModal] = useState(false);
   return (
     <ApolloProvider client={client}>
-      <Header />
+      <Header setModal={setModal} />
       <Container>
+        {modal && <ClientModal setModal={setModal} />}
         <Clients />
       </Container>
     </ApolloProvider>

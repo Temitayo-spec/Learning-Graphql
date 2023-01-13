@@ -1,17 +1,31 @@
-import React from 'react';
 import styled from 'styled-components';
 import logo from './assets/logo.png';
+import { FaUser } from 'react-icons/fa';
 
-const Header = () => {
+interface HeaderProps {
+  setModal: (modal: boolean) => void;
+}
+
+const Header = ({ setModal }: HeaderProps) => {
   return (
     <Wrapper>
       <Inner>
-        <a href="/">
+        <A href="/">
           <LogoContainer>
             <Logo src={logo} alt="logo" />
             <ProjectName>ProjectMgmt</ProjectName>
           </LogoContainer>
-        </a>
+        </A>
+        <ButttonContainer>
+          <Button
+            onClick={() => {
+              setModal(true);
+            }}
+          >
+            <FaUser />
+            Add Client
+          </Button>
+        </ButttonContainer>
       </Inner>
     </Wrapper>
   );
@@ -30,10 +44,10 @@ const Inner = styled.div`
   justify-content: space-between;
   width: 90%;
   margin: 0 auto;
+`;
 
-  a {
-    text-decoration: none;
-  }
+const A = styled.a`
+  text-decoration: none;
 `;
 
 const LogoContainer = styled.div`
@@ -51,4 +65,24 @@ const ProjectName = styled.h1`
   font-size: 1.5em;
   font-weight: 300;
   color: #e10098;
+`;
+
+const ButttonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1em;
+`;
+
+const Button = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  font-size: 1em;
+  font-weight: 300;
+  color: #fff;
+  background-color: #e10098;
+  border: none;
+  cursor: pointer;
 `;
