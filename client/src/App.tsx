@@ -1,8 +1,9 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
-import { Clients, Header } from './components';
+import { Header } from './components';
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
-import ClientModal from './components/ClientModal';
 import { useState } from 'react';
+import { Home, NotFound, Project } from './pages';
 
 const cache = new InMemoryCache({
   typePolicies: {
@@ -32,11 +33,19 @@ function App() {
   const [modal, setModal] = useState(false);
   return (
     <ApolloProvider client={client}>
-      <Header setModal={setModal} />
-      <Container>
-        {modal && <ClientModal setModal={setModal} />}
-        <Clients />
-      </Container>
+      <Router>
+        <Header setModal={setModal} />
+        <Container>
+          <Routes>
+            <Route
+              path="/"
+              element={<Home modal={modal} setModal={setModal} />}
+            />
+            <Route path="/project/:id" element={<Project />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Container>
+      </Router>
     </ApolloProvider>
   );
 }

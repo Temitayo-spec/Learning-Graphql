@@ -114,13 +114,17 @@ const Modal = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 100;
+
+  @media (max-width: 500px) {
+    padding: 1em;
+  }
 `;
 
 const ModalContent = styled.div`
@@ -128,9 +132,11 @@ const ModalContent = styled.div`
   background-color: #fff;
   border-radius: 0.5em;
   padding: 1em;
+  position: relative;
 
   @media (max-width: 500px) {
-    width: 100%;
+    width: 90%;
+    margin: 0 auto;
   }
 `;
 

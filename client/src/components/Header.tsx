@@ -35,7 +35,18 @@ export default Header;
 
 const Wrapper = styled.div`
   width: 100%;
-  padding: 2em 0;
+  padding: 1em 0;
+  background-color: #fff;
+  box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 500px) {
+    padding: 1em 0;
+    position: sticky;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    overflow-y: hidden;
+  }
 `;
 
 const Inner = styled.div`
