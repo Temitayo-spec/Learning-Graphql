@@ -31,15 +31,25 @@ const client = new ApolloClient({
 
 function App() {
   const [modal, setModal] = useState(false);
+  const [modalTwo, setModalTwo] = useState(false);
   return (
     <ApolloProvider client={client}>
       <Router>
-        <Header setModal={setModal} />
+        <Header setModal={setModal}
+        setModalTwo={setModalTwo}
+        />
         <Container>
           <Routes>
             <Route
               path="/"
-              element={<Home modal={modal} setModal={setModal} />}
+              element={
+                <Home
+                  modal={modal}
+                  setModal={setModal}
+                  modalTwo={modalTwo}
+                  setModalTwo={setModalTwo}
+                />
+              }
             />
             <Route path="/project/:id" element={<Project />} />
             <Route path="*" element={<NotFound />} />

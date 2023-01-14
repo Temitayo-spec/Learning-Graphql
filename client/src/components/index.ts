@@ -5,3 +5,4 @@ export { default as Spinner } from './Spinner';
 export { default as ClientModal } from './ClientModal';
 export { default as Projects } from './Projects';
 export { default as ClientInfo } from './ClientInfo';
+export { default as ProjectModal } from './ProjectModal';

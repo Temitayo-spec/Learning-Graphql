@@ -4,9 +4,10 @@ import { FaUser } from 'react-icons/fa';
 
 interface HeaderProps {
   setModal: (modal: boolean) => void;
+  setModalTwo: (modalTwo: boolean) => void;
 }
 
-const Header = ({ setModal }: HeaderProps) => {
+const Header = ({ setModal, setModalTwo }: HeaderProps) => {
   return (
     <Wrapper>
       <Inner>
@@ -24,6 +25,14 @@ const Header = ({ setModal }: HeaderProps) => {
           >
             <FaUser />
             Add Client
+          </Button>
+          <Button
+            onClick={() => {
+              setModalTwo(true);
+            }}
+          >
+            <FaUser />
+            Add Project
           </Button>
         </ButttonContainer>
       </Inner>
