@@ -11,15 +11,15 @@ interface HeaderProps {
 const ProjectModal = ({ setModalTwo }: HeaderProps) => {
   const [data, setData] = useState({
     name: '',
-    email: '',
-    phone: '',
+    description: '',
+    status: '',
   });
 
   const [addClient] = useMutation(ADD_CLIENT, {
     variables: {
       name: data.name,
-      email: data.email,
-      phone: data.phone,
+      description: data.description,
+      status: data.status,
     },
     update(cache, { data: { addClient } }) {
       const { clients } = cache.readQuery({ query: GET_CLIENTS }) as any;
@@ -34,7 +34,7 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
     e.preventDefault();
 
     // validation here
-    if (data.name === '' || data.email === '' || data.phone === '') {
+    if (data.name === '' || data.description === '' || data.status === '') {
       alert('Please fill in all fields');
       return;
     }
@@ -79,26 +79,26 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
               />
             </FormGroup>
             <FormGroup>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                type="email"
-                id="email"
+              <Label htmlFor="description">Description</Label>
+              <TextArea
+                id="description"
                 onChange={(e) => {
-                  setData({ ...data, email: e.target.value });
+                  setData({ ...data, description: e.target.value });
                 }}
-                value={data.email}
-              />
+                value={data.description}
+              ></TextArea>
             </FormGroup>
             <FormGroup>
-              <Label htmlFor="phone">Phone</Label>
-              <Input
-                type="text"
-                id="phone"
+              <Label htmlFor="status">Status</Label>
+              <Select id="status" value={data.status}
                 onChange={(e) => {
-                  setData({ ...data, phone: e.target.value });
+                  setData({ ...data, status: e.target.value });
                 }}
-                value={data.phone}
-              />
+              >
+                <option value="new">Not Started</option>
+                <option value="progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </Select>
             </FormGroup>
             <SubmitButton type="submit">Add Client</SubmitButton>
           </Form>
@@ -198,4 +198,30 @@ const SubmitButton = styled.button`
   background-color: #e10098;
   cursor: pointer;
   margin-top: 1em;
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  padding: 0.5em 1em;
+  border: 1px solid #e10098;
+  border-radius: 0.5em;
+  font-size: 1em;
+  font-weight: 300;
+  color: #e10098;
+  resize: none;
+`;
+
+const Select = styled.select`
+  width: 100%;
+  padding: 0.5em 1em;
+  border: 1px solid #e10098;
+  border-radius: 0.5em;
+  font-size: 1em;
+  font-weight: 300;
+  color: #e10098;
+  background-color: #fff;
+
+  option {
+    color: #e10098;
+  }
 `;
