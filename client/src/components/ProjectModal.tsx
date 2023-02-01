@@ -209,6 +209,7 @@ const TextArea = styled.textarea`
   font-weight: 300;
   color: #e10098;
   resize: none;
+  height: 100px;
 `;
 
 const Select = styled.select`

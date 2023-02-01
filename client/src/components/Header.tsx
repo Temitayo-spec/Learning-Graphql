@@ -47,11 +47,11 @@ const Wrapper = styled.div`
   padding: 1em 0;
   background-color: #fff;
   box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
 
   @media (max-width: 500px) {
     padding: 1em 0;
-    position: sticky;
-    top: 0;
     left: 0;
     z-index: 100;
     overflow-y: hidden;
@@ -97,8 +97,8 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   gap: 0.5em;
-  padding: 0.5em 1em;
-  border-radius: 0.5em;
+  padding: 1em;
+  border-radius: 50px;
   font-size: 1em;
   font-weight: 300;
   color: #fff;

@@ -12,11 +12,6 @@ const ClientRow = ({ client }: ClientRowProps) => {
     variables: {
       id: client.id,
     },
-    // refetchQueries: [
-    //   {
-    //     query: GET_CLIENTS,
-    //   },
-    // ],
       update(cache, { data: { deleteClient } }) {
           const { clients } = cache.readQuery({ query: GET_CLIENTS }) as any;
           cache.writeQuery({
@@ -62,6 +57,10 @@ const Td = styled.td`
   padding: 0.5em 0;
   text-align: center;
   border-bottom: 1px solid #fff;
+
+  @media screen and (max-width: 500px) {
+    font-size: 1em;
+  }
 `;
 
 const Button = styled.button`
@@ -76,5 +75,9 @@ const Button = styled.button`
 
   &:hover {
     background-color: #e10098;
+  }
+
+  @media screen and (max-width: 500px) {
+    font-size: 0.8em;
   }
 `;
