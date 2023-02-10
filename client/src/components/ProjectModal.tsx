@@ -10,7 +10,7 @@ interface HeaderProps {
 }
 
 const ProjectModal = ({ setModalTwo }: HeaderProps) => {
-  const [data, setData] = useState({
+  const [info, setInfo] = useState({
     name: '',
     description: '',
     status: 'new',
@@ -24,13 +24,13 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
     e.preventDefault();
 
     // validation here
-    if (data.name === '' || data.description === '' || data.status === '') {
+    if (info.name === '' || info.description === '' || info.status === '') {
       alert('Please fill in all fields');
       return;
     }
 
     addProject();
-    setData({
+    setInfo({
       name: '',
       description: '',
       status: 'new',
@@ -75,9 +75,9 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
                       type="text"
                       id="name"
                       onChange={(e) => {
-                        setData({ ...data, name: e.target.value });
+                        setInfo({ ...info, name: e.target.value });
                       }}
-                      value={data.name}
+                      value={info.name}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -85,18 +85,18 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
                     <TextArea
                       id="description"
                       onChange={(e) => {
-                        setData({ ...data, description: e.target.value });
+                        setInfo({ ...info, description: e.target.value });
                       }}
-                      value={data.description}
+                      value={info.description}
                     ></TextArea>
                   </FormGroup>
                   <FormGroup>
                     <Label htmlFor="status">Status</Label>
                     <Select
                       id="status"
-                      value={data.status}
+                      value={info.status}
                       onChange={(e) => {
-                        setData({ ...data, status: e.target.value });
+                        setInfo({ ...info, status: e.target.value });
                       }}
                     >
                       <Option value="new">Not Started</Option>
