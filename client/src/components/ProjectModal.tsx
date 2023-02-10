@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
-import { ADD_CLIENT } from '../graphql/mutation/clientMutation';
-import { GET_CLIENTS } from '../graphql/queries/clientQueries';
+import { GET_PROJECTS } from '../graphql/queries/projectQueries';
+import { ADD_PROJECT } from '../graphql/mutation/projectMutation';
 
 interface HeaderProps {
   setModalTwo: (modal: boolean) => void;
@@ -12,20 +12,21 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
   const [data, setData] = useState({
     name: '',
     description: '',
-    status: '',
+    status: 'new',
+    clientId: ''
   });
 
-  const [addClient] = useMutation(ADD_CLIENT, {
+  const [addProject] = useMutation(ADD_PROJECT, {
     variables: {
       name: data.name,
       description: data.description,
       status: data.status,
     },
     update(cache, { data: { addClient } }) {
-      const { clients } = cache.readQuery({ query: GET_CLIENTS }) as any;
+      const { clients } = cache.readQuery({ query: GET_PROJECTS }) as any;
       cache.writeQuery({
-        query: GET_CLIENTS,
-        data: { clients: clients.concat([addClient]) },
+        query: GET_PROJECTS,
+        data: { clients: clients.concat([addProject]) },
       });
     },
   });
@@ -39,7 +40,7 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
       return;
     }
 
-    addClient();
+    addProject();
 
     setModalTwo(false);
   };
@@ -95,12 +96,12 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
                   setData({ ...data, status: e.target.value });
                 }}
               >
-                <option value="new">Not Started</option>
-                <option value="progress">In Progress</option>
-                <option value="completed">Completed</option>
+                <Option value="new">Not Started</Option>
+                <Option value="progress">In Progress</Option>
+                <Option value="completed">Completed</Option>
               </Select>
             </FormGroup>
-            <SubmitButton type="submit">Add Client</SubmitButton>
+            <SubmitButton type="submit">Add Project</SubmitButton>
           </Form>
         </ModalBody>
       </ModalContent>
@@ -221,8 +222,8 @@ const Select = styled.select`
   font-weight: 300;
   color: #e10098;
   background-color: #fff;
+`;
 
-  option {
-    color: #e10098;
-  }
+const Option = styled.option`
+  color: #e10098;
 `;
