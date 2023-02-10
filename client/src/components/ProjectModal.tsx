@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import { GET_PROJECTS } from '../graphql/queries/projectQueries';
 import { ADD_PROJECT } from '../graphql/mutation/projectMutation';
+import {GET_CLIENTS} from '../graphql/queries/clientQueries';
 
 interface HeaderProps {
   setModalTwo: (modal: boolean) => void;
@@ -16,20 +17,8 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
     clientId: ''
   });
 
-  const [addProject] = useMutation(ADD_PROJECT, {
-    variables: {
-      name: data.name,
-      description: data.description,
-      status: data.status,
-    },
-    update(cache, { data: { addClient } }) {
-      const { clients } = cache.readQuery({ query: GET_PROJECTS }) as any;
-      cache.writeQuery({
-        query: GET_PROJECTS,
-        data: { clients: clients.concat([addProject]) },
-      });
-    },
-  });
+  const {loading, error, data} = useQuery(GET_CLIENTS)
+
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -41,71 +30,88 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
     }
 
     addProject();
-
+    setData({
+      name: '',
+      description: '',
+      status: 'new',
+      clientId: '',
+    })
     setModalTwo(false);
   };
+
+  if (loading) return null;
+  if(error) return `Something went wrong`
+
   return (
-    <Modal
-      onClick={() => {
-        setModalTwo(false);
-      }}
-    >
-      <ModalContent
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        <ModalHeader>
-          <H2 className="modal-title">Add Project</H2>
-          <ButtonClose
-            type="button"
+    <>
+      {!loading && !error && (
+        <>
+          <Modal
             onClick={() => {
               setModalTwo(false);
             }}
           >
-            <span aria-hidden="true">&times;</span>
-          </ButtonClose>
-        </ModalHeader>
-        <ModalBody>
-          <Form onSubmit={onSubmit}>
-            <FormGroup>
-              <Label htmlFor="name">Name</Label>
-              <Input
-                type="text"
-                id="name"
-                onChange={(e) => {
-                  setData({ ...data, name: e.target.value });
-                }}
-                value={data.name}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label htmlFor="description">Description</Label>
-              <TextArea
-                id="description"
-                onChange={(e) => {
-                  setData({ ...data, description: e.target.value });
-                }}
-                value={data.description}
-              ></TextArea>
-            </FormGroup>
-            <FormGroup>
-              <Label htmlFor="status">Status</Label>
-              <Select id="status" value={data.status}
-                onChange={(e) => {
-                  setData({ ...data, status: e.target.value });
-                }}
-              >
-                <Option value="new">Not Started</Option>
-                <Option value="progress">In Progress</Option>
-                <Option value="completed">Completed</Option>
-              </Select>
-            </FormGroup>
-            <SubmitButton type="submit">Add Project</SubmitButton>
-          </Form>
-        </ModalBody>
-      </ModalContent>
-    </Modal>
+            <ModalContent
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <ModalHeader>
+                <H2 className="modal-title">Add Project</H2>
+                <ButtonClose
+                  type="button"
+                  onClick={() => {
+                    setModalTwo(false);
+                  }}
+                >
+                  <span aria-hidden="true">&times;</span>
+                </ButtonClose>
+              </ModalHeader>
+              <ModalBody>
+                <Form onSubmit={onSubmit}>
+                  <FormGroup>
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      type="text"
+                      id="name"
+                      onChange={(e) => {
+                        setData({ ...data, name: e.target.value });
+                      }}
+                      value={data.name}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="description">Description</Label>
+                    <TextArea
+                      id="description"
+                      onChange={(e) => {
+                        setData({ ...data, description: e.target.value });
+                      }}
+                      value={data.description}
+                    ></TextArea>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="status">Status</Label>
+                    <Select
+                      id="status"
+                      value={data.status}
+                      onChange={(e) => {
+                        setData({ ...data, status: e.target.value });
+                      }}
+                    >
+                      <Option value="new">Not Started</Option>
+                      <Option value="progress">In Progress</Option>
+                      <Option value="completed">Completed</Option>
+                    </Select>
+                  </FormGroup>
+                  <SubmitButton type="submit">Add Project</SubmitButton>
+                </Form>
+              </ModalBody>
+            </ModalContent>
+          </Modal>
+        </>
+      )}
+    </>
   );
 };
 
