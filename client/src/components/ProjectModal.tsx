@@ -29,7 +29,6 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
       return;
     }
 
-    addProject();
     setInfo({
       name: '',
       description: '',
