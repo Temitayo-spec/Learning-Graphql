@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useMutation } from '@apollo/client';
 import { DELETE_CLIENT } from '../graphql/mutation/clientMutation';
 import { GET_CLIENTS } from '../graphql/queries/clientQueries';
+import { GET_PROJECTS } from '../graphql/queries/projectQueries';
 interface ClientRowProps {
   client: any;
 }
@@ -12,14 +13,7 @@ const ClientRow = ({ client }: ClientRowProps) => {
     variables: {
       id: client.id,
     },
-      update(cache, { data: { deleteClient } }) {
-          const { clients } = cache.readQuery({ query: GET_CLIENTS }) as any;
-          cache.writeQuery({
-              query: GET_CLIENTS,
-              data: { clients: clients.filter((c: any) => c.id !== deleteClient.id) },
-          }
-          );
-        }
+    refetchQueries: [{ query: GET_CLIENTS }, { query: GET_PROJECTS }],
   });
 
   return (
