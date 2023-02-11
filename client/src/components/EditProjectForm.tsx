@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { GET_PROJECT } from '../graphql/queries/projectQueries';
 import { UPDATE_PROJECT } from '../graphql/mutation/projectMutation';
+import Spinner from './Spinner';
 
 interface Props {
   project: {
@@ -20,9 +21,10 @@ const EditProjectForm = ({ project }: Props) => {
     status: '',
     loading: false,
   });
-
+    
   const [updateProject] = useMutation(UPDATE_PROJECT, {
     variables: {
+      id: project.id,
       name: info.name,
       description: info.description,
       status: info.status,
@@ -46,6 +48,9 @@ const EditProjectForm = ({ project }: Props) => {
 
     updateProject();
   };
+
+    if (info.loading) return <Spinner />
+    
   return (
     <Wrapper>
       <H3>Update Project</H3>
