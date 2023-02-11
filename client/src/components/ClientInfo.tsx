@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 import { FaIdBadge, FaEnvelope, FaPhone } from 'react-icons/fa';
 
-type Props = {
-  client: any;
+interface Props {
+  client: {
+    name: string;
+    email: string;
+    phone: string;
+  };
 };
 
 const ClientInfo = ({ client }: Props) => {

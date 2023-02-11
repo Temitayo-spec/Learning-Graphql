@@ -1,7 +1,12 @@
 import { GET_PROJECT } from '../graphql/queries/projectQueries';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
-import { ClientInfo, Spinner } from '../components';
+import {
+  ClientInfo,
+  DeleteProjectButton,
+  EditProjectForm,
+  Spinner,
+} from '../components';
 import styled from 'styled-components';
 import { FaArrowLeft } from 'react-icons/fa';
 
@@ -36,6 +41,10 @@ const Project = () => {
           {data?.project?.client && (
             <ClientInfo client={data?.project?.client} />
           )}
+
+          <EditProjectForm project={data?.project} />
+
+          <DeleteProjectButton projectId={data?.project?.id as string} />
         </Inner>
       )}
     </Container>

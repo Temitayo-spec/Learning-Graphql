@@ -6,3 +6,5 @@ export { default as ClientModal } from './ClientModal';
 export { default as Projects } from './Projects';
 export { default as ClientInfo } from './ClientInfo';
 export { default as ProjectModal } from './ProjectModal';
+export { default as DeleteProjectButton } from './DeleteProjectButton';
+export { default as EditProjectForm } from './EditProjectForm';
