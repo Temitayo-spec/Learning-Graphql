@@ -32,10 +32,11 @@ const Projects = () => {
 export default Projects;
 
 const Row = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin: 0 -1em;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-gap: 1rem;
+  margin: 0 1rem;
+  width: 90%;
 
   @media (max-width: 500px) {
     flex-direction: column;

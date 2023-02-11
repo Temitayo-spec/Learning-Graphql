@@ -3,7 +3,8 @@ import { useMutation, useQuery } from '@apollo/client';
 import styled from 'styled-components';
 import { GET_PROJECTS } from '../graphql/queries/projectQueries';
 import { ADD_PROJECT } from '../graphql/mutation/projectMutation';
-import {GET_CLIENTS} from '../graphql/queries/clientQueries';
+import { GET_CLIENTS } from '../graphql/queries/clientQueries';
+import Spinner from './Spinner';
 
 interface HeaderProps {
   setModalTwo: (modal: boolean) => void;
@@ -14,11 +15,28 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
     name: '',
     description: '',
     status: 'new',
-    clientId: ''
+    clientId: '',
   });
 
-  const {loading, error, data} = useQuery(GET_CLIENTS)
+  // Add project
+  const [addProject] = useMutation(ADD_PROJECT, {
+    variables: {
+      name: info.name,
+      description: info.description,
+      status: info.status,
+      clientId: info.clientId,
+    },
+    update(cache, { data: { addProject } }) {
+      const { projects } = cache.readQuery({ query: GET_PROJECTS }) as any;
+      cache.writeQuery({
+        query: GET_PROJECTS,
+        data: { projects: projects.concat([addProject]) },
+      });
+    },
+  });
 
+  //Get clients
+  const { loading, error, data } = useQuery(GET_CLIENTS);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,17 +47,19 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
       return;
     }
 
+    addProject();
+
     setInfo({
       name: '',
       description: '',
       status: 'new',
       clientId: '',
-    })
+    });
     setModalTwo(false);
   };
 
-  if (loading) return null;
-  if(error) return `Something went wrong`
+  if (loading) return <Spinner />;
+  if (error) return <p>Error :(</p>;
 
   return (
     <>
@@ -101,6 +121,25 @@ const ProjectModal = ({ setModalTwo }: HeaderProps) => {
                       <Option value="new">Not Started</Option>
                       <Option value="progress">In Progress</Option>
                       <Option value="completed">Completed</Option>
+                    </Select>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="client">Client</Label>
+                    <Select
+                      id="clientId"
+                      value={info.clientId}
+                      onChange={(e) => {
+                        setInfo({ ...info, clientId: e.target.value });
+                      }}
+                    >
+                      <Option value="">Select Client</Option>
+                      {data.clients.map(
+                        (client: { id: number; name: string }) => (
+                          <Option key={client.id} value={client.id}>
+                            {client.name}
+                          </Option>
+                        )
+                      )}
                     </Select>
                   </FormGroup>
                   <SubmitButton type="submit">Add Project</SubmitButton>
@@ -215,7 +254,7 @@ const TextArea = styled.textarea`
   font-weight: 300;
   color: #e10098;
   resize: none;
-  height: 100px;
+  height: 60px;
 `;
 
 const Select = styled.select`
